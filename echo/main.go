@@ -9,7 +9,10 @@ import (
 func main() {
 	e := echo.New()
 	e.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Hola Mundo, estoy corriendo era culpa de la version!")
+		return c.String(http.StatusOK, "Hola Mundo, estoy corriendo como Servidor!")
+	})
+	e.GET("/hola", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hola Mundo, estoy corriendo como una API!")
 	})
 	e.Logger.Fatal(e.Start(":1323"))
 }
