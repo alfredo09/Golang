@@ -1,11 +1,11 @@
 # Golang
 
 ## Install golang version 1.13.9
-
+```
 $ wget https://dl.google.com/go/go1.13.9.linux-amd64.tar.gz
 $ tar xf go1.13.9.linux-amd64.tar.gz
 $ sudo mv go /usr/local/go-1.13
-
+```
 ## Export paths
 ```
 export GOROOT=/usr/local/go-1.13
