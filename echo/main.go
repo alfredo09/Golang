@@ -36,7 +36,7 @@ func main() {
 	}
 	// Listo, aquí ya podemos usar a db!
 	fmt.Printf("Conectado correctamente")
-}
+} 
 /* package main
 
 import (
@@ -54,4 +54,4 @@ func main() {
 		return c.String(http.StatusOK, "Hola Mundo, estoy corriendo como una API!")
 	})
 	e.Logger.Fatal(e.Start(":1323"))
-} */
+}  */

@@ -1,11 +1,18 @@
 package main
 
-import "github.com/beego/beego/v2/server/web"
+import (
+        "github.com/beego/beego/v2/server/web"
+)
 
-func init() {
-    beego.Router("/", &controllers.MainController{})
-    beego.Router("/hello-world", &controllers.MainController{}, "get:HelloSitepoint")
+type MainController struct {
+        web.Controller
 }
+
+func (this *MainController) Get() {
+        this.Ctx.WriteString("hello world")   
+}
+
 func main() {
-	web.Run()
+        web.Router("/", &MainController{})    
+        web.Run()
 }
