@@ -1,52 +1,39 @@
 package main
-
 import (
-	_ "beego_jwt_sample/routers"
 	"fmt"
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
+	"database/sql"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func init() {
-	// Register `mysql` driver
-	_ = orm.RegisterDriver("mysql", orm.DRMySQL)
-	// Register `default` database
-	_ = orm.RegisterDataBase("default", "mysql", "root:@tcp(127.0.0.1:3306)/beego_jwt_test?charset=utf8")
-	// Run migrations to create tables
-	force := true // Drop old table and create new
-	err := orm.RunSyncdb("default", force, beego.BConfig.RunMode == "dev")
+func getMysqlDB() (*sql.DB, error) {
+	connectString := "root:root@tcp(172.31.23.166:3306)/bdEcho"
+
+	db, err := sql.Open("mysql", connectString)
 	if err != nil {
-		fmt.Printf("An Error Occurred: %v", err)
+		return nil, err
 	}
-	fmt.Printf("Conectado correctamente")
+
+	return db, nil
 }
-
-/* func main() {
-	// Set configurations
-	beego.BConfig.RunMode = "dev"
-
-	beego.BConfig.AppName = "BeegoJWT"
-	beego.BConfig.Listen.HTTPPort = 80
-
-	beego.BConfig.CopyRequestBody = true
-	beego.BConfig.RouterCaseSensitive = false
-	beego.BConfig.ServerName = "BEEGO_JWT"
-
-	beego.BConfig.WebConfig.AutoRender = false
-	beego.BConfig.WebConfig.EnableDocs = true
-
-	if beego.BConfig.RunMode == "dev" {
-		beego.BConfig.Listen.HTTPPort = 8080
-
-		beego.BConfig.WebConfig.DirectoryIndex = true
-		beego.BConfig.WebConfig.StaticDir["/swagger"] = "swagger"
-		beego.BConfig.Listen.EnableAdmin = true
+func main() {
+	db, err := getMysqlDB()
+	if err != nil {
+		fmt.Printf("Error obteniendo base de datos: %v", err)
+		return
 	}
+	// Terminar conexión al terminar función
+	defer db.Close()
 
-	// Run application
-	beego.Run()
-} */
+	// Ahora vemos si tenemos conexión
+	err = db.Ping()
+	if err != nil {
+		fmt.Printf("Error conectando: %v", err)
+		return
+	}
+	// Listo, aquí ya podemos usar a db!
+	fmt.Printf("Conectado correctamente")
+} 
 /* package main
 
 import (
