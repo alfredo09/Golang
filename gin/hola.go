@@ -1,44 +1,43 @@
+package main
 import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
-	"time"
+	
 )
 
-var MysqlDb *sql.DB
-var MysqlDbErr error
-
-const (
-	USER_NAME = "root"
-	PASS_WORD = "root"
-	HOST      = "172.31.23.166"
-	PORT      = "3306"
-	DATABASE  = "mysql"
-	CHARSET   = "utf8"
-)
-
-// Inicializado enlace
-func init() {
-	dbDSN := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s", USER_NAME, PASS_WORD, HOST, PORT, DATABASE, CHARSET)
-	// Abrir la conexión falló
-	MysqlDb, MysqlDbErr = sql.Open("mysql", dbDSN)
-	//defer MysqlDb.Close();
-	if MysqlDbErr != nil {
-		log.Println("dbDSN: " + dbDSN)
-		panic("La configuración de la fuente de datos es incorrecta:" + MysqlDbErr.Error())
+func getMysqlDB() (*sql.DB, error) {
+	USER_NAME := "root"
+	PASS_WORD := "root"
+	HOST := "172.31.23.166"
+	PORT := "3306"
+	DATABASE := "mysql"
+	CHARSET := "utf8"
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", USER_NAME, PASS_WORD, HOST, PORT, DATABASE, CHARSET))
+	if err != nil {
+		return nil, err
 	}
-	// Número de conexión máxima
-	MysqlDb.SetMaxOpenConns(100)
-	// conexión inactiva
-	MysqlDb.SetMaxIdleConns(20)
-	// Ciclo de conexión máxima
-	MysqlDb.SetConnMaxLifetime(100 * time.Second)
-
-	if MysqlDbErr = MysqlDb.Ping(); nil != MysqlDbErr {
-		panic("Falló el enlace de la base de datos:" + MysqlDbErr.Error())
-	}
+	return db, nil
 }
+// Inicializado enlace
+func main() {
+	db, err := getMysqlDB()
+	if err != nil {
+		fmt.Printf("Error obteniendo base de datos: %v", err)
+		return
+	}
+	// Terminar conexión al terminar función
+	defer db.Close()
+
+	// Ahora vemos si tenemos conexión
+	err = db.Ping()
+	if err != nil {
+		fmt.Printf("Error conectando: %v", err)
+		return
+	}
+	// Listo, aquí ya podemos usar a db!
+	fmt.Printf("Conectado correctamente")
+} 
 /* package main
 
 import "github.com/gin-gonic/gin"
