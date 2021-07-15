@@ -7,7 +7,7 @@ import (
 )
 
 func getMysqlDB() (*sql.DB, error) {
-	connectString := "root:root@tcp(172.31.23.166:3306)/bdEcho"
+	connectString := "root:root@tcp(172.31.23.166:3306)/mysql"
 
 	db, err := sql.Open("mysql", connectString)
 	if err != nil {

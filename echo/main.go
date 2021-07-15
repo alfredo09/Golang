@@ -7,10 +7,10 @@ import (
 )
 
 func obtenerBaseDeDatos() (db *sql.DB, e error) {
-	usuario := "54.200.47.227"
+	usuario := "root"
 	pass := "root"
-	host := "tcp(54.200.47.227:3306)"
-	nombreBaseDeDatos := "bdEcho"
+	host := "tcp(172.31.23.166:3306)"
+	nombreBaseDeDatos := "mysql"
 	// Debe tener la forma usuario:contraseña@host/nombreBaseDeDatos
 	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", usuario, pass, host, nombreBaseDeDatos))
 	if err != nil {

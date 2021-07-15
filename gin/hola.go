@@ -13,7 +13,7 @@ func getMysqlDB() (*sql.DB, error) {
 	PORT := "3306"
 	DATABASE := "mysql"
 	CHARSET := "utf8"
-	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@%s/%s", USER_NAME, PASS_WORD, HOST, PORT, DATABASE, CHARSET))
+	db, err := sql.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=%s", USER_NAME, PASS_WORD, HOST, PORT, DATABASE, CHARSET))
 	if err != nil {
 		return nil, err
 	}
